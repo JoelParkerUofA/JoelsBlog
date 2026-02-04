@@ -18,7 +18,7 @@
     "href": "posts/post-with-code/index.html",
     "title": "Post With Code",
     "section": "",
-    "text": "This is a post with executable code.\n\n1 + 1\n\n[1] 2"
+    "text": "This is a post with executable code.\n#| standalone: true\n#| viewerHeight: 400\n\nlibrary(shiny)\nlibrary(ggplot2)\n\nui &lt;- fluidPage(\n  titlePanel(\"Basic Interactive Model\"),\n  sidebarLayout(\n    sidebarPanel(\n      sliderInput(\"n\", \"Sample Size (n):\", min = 10, max = 500, value = 100),\n      sliderInput(\"sd\", \"Model Spread (SD):\", min = 0.1, max = 5, value = 1)\n    ),\n    mainPanel(\n      plotOutput(\"distPlot\")\n    )\n  )\n)\n\nserver &lt;- function(input, output) {\n  output$distPlot &lt;- renderPlot({\n    # Generate data based on user input\n    set.seed(123)\n    data &lt;- data.frame(x = rnorm(input$n, mean = 0, sd = input$sd))\n    \n    # Plot the model results\n    ggplot(data, aes(x = x)) +\n      geom_histogram(bins = 30, fill = \"#2780e3\", color = \"white\") +\n      theme_minimal() +\n      labs(title = paste(\"Simulation with n =\", input$n),\n           subtitle = paste(\"Standard Deviation =\", input$sd))\n  })\n}\n\nshinyApp(ui = ui, server = server)"
   },
   {
     "objectID": "index.html",
